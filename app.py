@@ -27,9 +27,8 @@ login_manager.login_view = 'login'
 def get_db_connection():
     """Conectar a PostgreSQL usando pg8000 (100% Python) con SSL"""
     try:
-        import pg8000
-        import ssl
-        
+      import psycopg2
+import psycopg2.extras
         # Crear contexto SSL (Importante para Render)
         ssl_context = ssl.create_default_context()
         ssl_context.check_hostname = False
