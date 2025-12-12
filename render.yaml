@@ -1,0 +1,12 @@
+services:
+  - type: web
+    name: sistema-vuelos
+    env: python
+    pythonVersion: "3.11.0"  # <- ESTO ES CLAVE
+    buildCommand: pip install -r requirements.txt
+    startCommand: gunicorn app:app
+    envVars:
+      - key: DATABASE_URL
+        value: postgresql://yova:j0smlHpbZTp1qgZsruJUHI9XW7Gv9gtt@dpg-d4u0hcfgi27c73a9b4rg-a.virginia-postgres.render.com/sistema_2tdl
+      - key: SECRET_KEY
+        value: clave-secreta-muy-segura-para-produccion-123
