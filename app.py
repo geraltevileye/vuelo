@@ -7,8 +7,7 @@ Sistema de reservas automáticas
 
 from flask import Flask, request, redirect, url_for, flash
 from flask_login import LoginManager, UserMixin, login_user, login_required, logout_user, current_user
-import psycopg2
-import psycopg2.extras
+import pg800
 from datetime import datetime, timedelta
 import bcrypt
 import os
