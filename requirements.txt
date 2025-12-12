@@ -3,4 +3,5 @@ Flask-Login==0.6.3
 psycopg2-binary==2.9.9
 bcrypt==4.0.1
 python-dotenv==1.0.0
-gunicorn==21.2.0
+gunicorn==20.1.0  # Versión más estable
+Werkzeug==2.3.7   # Versión compatible con Flask 2.3.3
