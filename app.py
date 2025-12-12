@@ -9,6 +9,8 @@ from flask import Flask, request, redirect, url_for, flash
 from flask_login import LoginManager, UserMixin, login_user, login_required, logout_user, current_user
 from datetime import datetime, timedelta
 import bcrypt
+import psycopg2
+import psycopg2.extras
 import os
 import json
 import random
@@ -25,29 +27,20 @@ login_manager.login_view = 'login'
 
 # ==================== CONEXIÓN BASE DE DATOS ====================
 def get_db_connection():
-    """Conectar a PostgreSQL usando pg8000 (100% Python) con SSL"""
+    """Conectar a PostgreSQL usando psycopg2 con SSL"""
     try:
-      import psycopg2
-import psycopg2.extras
-        # Crear contexto SSL (Importante para Render)
-        ssl_context = ssl.create_default_context()
-        ssl_context.check_hostname = False
-        ssl_context.verify_mode = ssl.CERT_NONE
-        
-        return pg8000.connect(
+        conn = psycopg2.connect(
             host='dpg-d4u0hcfgi27c73a9b4rg-a.virginia-postgres.render.com',
             database='sistema_2tdl',
             user='yova',
             password='j0smlHpbZTp1qgZsruJUHI9XW7Gv9gtt',
             port=5432,
-            ssl_context=ssl_context,  # ¡ESTO ES CRÍTICO!
-            timeout=10
+            sslmode='require'  # SSL obligatorio
         )
+        return conn
     except Exception as e:
-        print(f"❌ Error conectando a la base de datos: {e}")
-        # Retornar None para manejar el error en las rutas
+        print(f"❌ Error conectando a PostgreSQL: {str(e)[:100]}")
         return None
-#
 # ==================== CREAR TABLAS AUTOMÁTICAMENTE ====================
 def init_database():
     try:
