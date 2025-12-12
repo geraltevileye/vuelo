@@ -25,21 +25,30 @@ login_manager.login_view = 'login'
 
 # ==================== CONEXIÓN BASE DE DATOS ====================
 def get_db_connection():
-    """Conectar a PostgreSQL usando pg8000 (100% Python)"""
+    """Conectar a PostgreSQL usando pg8000 (100% Python) con SSL"""
     try:
         import pg8000
+        import ssl
+        
+        # Crear contexto SSL (Importante para Render)
+        ssl_context = ssl.create_default_context()
+        ssl_context.check_hostname = False
+        ssl_context.verify_mode = ssl.CERT_NONE
         
         return pg8000.connect(
             host='dpg-d4u0hcfgi27c73a9b4rg-a.virginia-postgres.render.com',
             database='sistema_2tdl',
             user='yova',
             password='j0smlHpbZTp1qgZsruJUHI9XW7Gv9gtt',
-            port=5432
+            port=5432,
+            ssl_context=ssl_context,  # ¡ESTO ES CRÍTICO!
+            timeout=10
         )
     except Exception as e:
         print(f"❌ Error conectando a la base de datos: {e}")
-        raise
-
+        # Retornar None para manejar el error en las rutas
+        return None
+#
 # ==================== CREAR TABLAS AUTOMÁTICAMENTE ====================
 def init_database():
     try:
